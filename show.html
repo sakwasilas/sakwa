@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ICT CAT 1 - Summit Technical College</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      width: 100%;
+      max-width: 650px;
+      margin-top: 40px;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .logo img {
+      width: 80px;
+    }
+
+    h1, h2,h {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      color: skyblue;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    #timer {
+      font-weight: bold;
+      color: #c0392b;
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .info-field {
+      margin-bottom: 15px;
+    }
+
+    .info-field input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .question {
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .option input[type="radio"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .option label {
+      flex: 1;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #1e6fa1;
+    }
+
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    #finalScore {
+      margin-top: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    #locked {
+      margin-top: 30px;
+      font-weight: bold;
+      text-align: center;
+      color: green;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px; }
+      h1 { font-size: 1.3rem; }
+      h2 { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="logo.jpg"alt="summit technical college">
+    </div>
+    <h1>SUMMIT TECHNICAL COLLEGE</h1>
+     <center><h>FOUNDATION LEVEL 2 ICT CAT 1 2025<h1></center>
+    <div id="timer">Time Left: 60s</div>
+
+    <!-- Student Info -->
+    <div id="student-section">
+      <div class="info-field"><input type="text" id="name" placeholder="Enter your name"></div>
+      <div class="info-field"><input type="text" id="course" placeholder="Enter your course"></div>
+      <div class="info-field"><input type="text" id="subject" placeholder="Enter subject"></div>
+      <div class="info-field"><input type="text" id="admNo" placeholder="Enter Admission No"></div>
+      <div class="info-field"><input type="text" id="kasnebNo" placeholder="Enter KASNEB No"></div>
+      <button id="startBtn" disabled onclick="startQuiz()">Start Questions</button>
+    </div>
+
+    <!-- Quiz Section -->
+    <div id="quiz-section" style="display: none;">
+      <div class="question" id="question">Question will appear here</div>
+      <form id="options"></form>
+      <button onclick="submitAnswer()">Next</button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="result-section" style="display: none;">
+      <h2>Quiz Completed</h2>
+      <p id="finalScore"></p>
+      <p><strong>RESULTS SUBMITTED <span style color="red">Thank you all the best</strong></p>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { question: "What is a computer?", options: ["A machine that cooks food", "A device for sending messages", "An electronic device that processes data", "A machine used for printing books"], answer: "An electronic device that processes data" },
+      { question: "Which is not a function of a computer?", options: ["Processing data", "Storing data", "Painting walls", "Input and output operations"], answer: "Painting walls" },
+      { question: "The brain of the computer is called:", options: ["Monitor", "CPU", "Keyboard", "Mouse"], answer: "CPU" },
+      { question: "Which of these is an input device?", options: ["Monitor", "Printer", "Mouse", "Speaker"], answer: "Mouse" },
+      { question: "The part that shows output as images is:", options: ["CPU", "Monitor", "Keyboard", "Scanner"], answer: "Monitor" },
+      { question: "What does RAM stand for?", options: ["Random Access Memory", "Ready Access Module", "Read And Modify", "Random Action Machine"], answer: "Random Access Memory" },
+      { question: "Hard disk is used for:", options: ["Printing", "Playing music", "Permanent data storage", "Internet"], answer: "Permanent data storage" },
+      { question: "Which is system software?", options: ["MS Word", "Antivirus", "Windows OS", "Chrome"], answer: "Windows OS" },
+      { question: "Application software is used to:", options: ["Operate hardware", "Perform user tasks", "Store components", "Manage drivers"], answer: "Perform user tasks" },
+      { question: "Software that helps you type documents:", options: ["Operating System", "Antivirus", "Word Processor", "Browser"], answer: "Word Processor" }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let student = {};
+
+    const inputs = document.querySelectorAll("input[type='text']");
+    inputs.forEach(input => {
+      input.addEventListener("input", () => {
+        const filled = Array.from(inputs).every(inp => inp.value.trim() !== "");
+        document.getElementById("startBtn").disabled = !filled;
+      });
+    });
+
+    function startQuiz() {
+      student.name = document.getElementById("name").value;
+      student.course = document.getElementById("course").value;
+      student.subject = document.getElementById("subject").value;
+      student.admNo = document.getElementById("admNo").value;
+      student.kasnebNo = document.getElementById("kasnebNo").value;
+
+      document.getElementById("student-section").style.display = "none";
+      document.getElementById("quiz-section").style.display = "block";
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("question").textContent = q.question;
+
+      const optionsForm = document.getElementById("options");
+      optionsForm.innerHTML = "";
+
+      q.options.forEach(option => {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("option");
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "option";
+        radio.value = option;
+
+        const label = document.createElement("label");
+        label.textContent = option;
+
+        wrapper.appendChild(radio);
+        wrapper.appendChild(label);
+        optionsForm.appendChild(wrapper);
+      });
+    }
+
+    function submitAnswer() {
+      event.preventDefault();
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (!selected) {
+        alert("Please select an answer.");
+        return;
+      }
+
+      if (selected.value === questions[currentQuestion].answer) {
+        score++;
+      }
+
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById("quiz-section").style.display = "none";
+      document.getElementById("result-section").style.display = "block";
+
+      document.getElementById("finalScore").innerHTML = `
+        <strong>NAME:</strong> ${student.name}<br>
+        <strong>COURSE:</strong> ${student.course}<br>
+        <strong>SUBJECT:</strong> ${student.subject}<br>
+        <strong>ADMISSION NO:</strong> ${student.admNo}<br>
+        <strong>KASNEB NO:</strong> ${student.kasnebNo}<br><br>
+        <strong>YOUR SCORE:</strong> ${score} / ${questions.length}
+      `;
+    }
+  </script>
+</body>
+</html>
